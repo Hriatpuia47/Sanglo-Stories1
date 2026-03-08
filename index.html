@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanglo Stories - Read, Like, Comment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Janson&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #8b4513;
+            --accent: #e74c3c;
+            --bg-cream: #fdf8f3;
+            --bg-white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #6b7280;
+            --border: #e5e0db;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --glow-primary: 0 0 20px rgba(44, 62, 80, 0.4);
+            --glow-secondary: 0 0 25px rgba(139, 69, 19, 0.5);
+            --glow-accent: 0 0 20px rgba(231, 76, 60, 0.4);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary: #4a90e2;
+            --secondary: #f39c12;
+            --accent: #e74c3c;
+            --bg-cream: #1a1a1a;
+            --bg-white: #2d2d2d;
+            --text-dark: #ffffff;
+            --text-muted: #b0b0b0;
+            --border: #404040;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.4);
+            --glow-primary: 0 0 25px rgba(74, 144, 226, 0.5);
+            --glow-secondary: 0 0 30px rgba(243, 156, 18, 0.6);
+            --glow-accent: 0 0 25px rgba(231, 76, 60, 0.5);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Janson', serif !important;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Advanced Glow Effects */
+        .glow-primary {
+            box-shadow: var(--glow-primary);
+            filter: drop-shadow(0 0 10px rgba(44, 62, 80, 0.3));
+        }
+
+        .glow-secondary {
+            box-shadow: var(--glow-secondary);
+            filter: drop-shadow(0 0 12px rgba(139, 69, 19, 0.4));
+        }
+
+        .glow-accent {
+            box-shadow: var(--glow-accent);
+            filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.3));
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.1) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        header:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        .logo-icon:hover {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5); }
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            transition: border-color 0.3s;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--secondary);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+
+        .search-bar .search-icon {
+            color: var(--text-muted);
+            margin-right: 0.5rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--primary);
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--glow-primary);
+        }
+
+        .theme-toggle:hover::before {
+            opacity: 1;
+        }
+
+        .theme-toggle:hover {
+            color: white;
+            border-color: transparent;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .admin-link {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .admin-link:hover {
+            background: var(--primary);
+            color: white !important;
+        }
+
+        .contact-btn {
+            background: var(--gradient-secondary);
+            color: white !important;
+            padding: 0.75rem 1.75rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+            text-align: center;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .contact-btn:hover::before {
+            left: 100%;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            animation: heroBackground 15s ease-in-out infinite;
+        }
+
+        @keyframes heroBackground {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: heroFadeIn 1.5s ease-out;
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .loading-spinner {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* About Section */
+        .about-section {
+            background: var(--bg-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .about-section .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .about-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        }
+
+        /* Story Card */
+        .story-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .story-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .story-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .story-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .story-image:hover::before {
+            opacity: 1;
+        }
+
+        .story-image:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-content {
+            padding: 2rem;
+        }
+
+        .story-category {
+            display: inline-block;
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .story-category:hover::before {
+            left: 100%;
+        }
+
+        .story-category:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(240, 147, 251, 0.5);
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .story-title:hover {
+            color: var(--secondary);
+            text-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+            transform: translateX(5px);
+        }
+
+        .story-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .story-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .story-text {
+            font-family: 'Janson', serif;
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+
+        .story-text.truncated .story-preview {
+            position: relative;
+        }
+
+        .story-text.truncated .story-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3rem;
+            background: linear-gradient(transparent, var(--bg-white));
+            pointer-events: none;
+        }
+
+        .read-more-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .read-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .read-more-btn:hover::before {
+            left: 100%;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .story-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text p:first-of-type::first-letter {
+            font-size: 3.5rem;
+            font-weight: 700;
+            float: left;
+            line-height: 1;
+            padding-right: 0.75rem;
+            color: var(--secondary);
+        }
+
+        /* Actions Bar */
+        .actions-bar {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem 2rem;
+            background: var(--bg-cream);
+            border-top: 1px solid var(--border);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 30px;
+        }
+
+        .like-btn {
+            background: var(--bg-white);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .like-btn:hover, .like-btn.liked {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: var(--glow-accent);
+        }
+
+        .like-btn:hover::before, .like-btn.liked::before {
+            opacity: 0.1;
+        }
+
+        .like-btn.liked .heart-icon {
+            animation: heartBeat 0.6s ease-in-out;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .comment-btn {
+            background: var(--bg-white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .comment-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: var(--glow-primary);
+        }
+
+        .comment-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+
+        .comments-section.active {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comments-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .comment-input:focus {
+            border-color: var(--secondary);
+        }
+
+        .submit-comment {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .submit-comment::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-comment:hover::before {
+            left: 100%;
+        }
+
+        .submit-comment:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment {
+            background: var(--bg-cream);
+            padding: 1.25rem;
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .comment-text {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        /* Contact Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal {
+            background: var(--bg-white);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2.5rem;
+            position: relative;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-form {
+            width: 100%;
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .submit-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-form:hover::before {
+            left: 100%;
+        }
+
+        .submit-form:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive - Phone View */
+        @media (max-width: 768px) {
+            /* Header */
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            nav {
+                gap: 0.75rem;
+            }
+
+            .search-bar {
+                max-width: 200px;
+            }
+
+            .theme-toggle {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+            }
+
+            .admin-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .contact-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                text-align: center;
+            }
+
+            /* Hero */
+            .hero {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            /* Main Content */
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            /* Story Card */
+            .story-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .story-image {
+                height: 180px;
+                font-size: 2.5rem;
+            }
+
+            .story-content {
+                padding: 1.25rem;
+            }
+
+            .story-category {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.6rem;
+            }
+
+            .story-title {
+                font-size: 1.35rem;
+            }
+
+            .story-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .story-text {
+                font-size: 1.05rem;
+            }
+
+            .story-text p:first-of-type::first-letter {
+                font-size: 2.5rem;
+            }
+
+            /* Actions Bar */
+            .actions-bar {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            /* Comments Section */
+            .comments-section {
+                padding: 1.25rem;
+            }
+
+            .comments-title {
+                font-size: 1.25rem;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+
+            .submit-comment {
+                width: 100%;
+            }
+
+            /* Contact Modal */
+            .modal {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .modal h2 {
+                font-size: 1.35rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .submit-form {
+                padding: 0.875rem;
+            }
+
+            /* Footer */
+            footer {
+                padding: 1.5rem;
+            }
+
+            footer p {
+                font-size: 0.8rem;
+            }
+
+            /* Loading & Empty States */
+            .loading, .empty-state {
+                padding: 2rem 1rem;
+            }
+
+            .loading-spinner {
+                font-size: 1.5rem;
+            }
+
+            .empty-state-icon {
+                font-size: 3rem;
+            }
+
+            .empty-state h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .story-title {
+                font-size: 1.2rem;
+            }
+
+            .story-text {
+                font-size: 1rem;
+            }
+
+            .story-text p:first-of-type::first-letter {
+                font-size: 2rem;
+            }
+
+            nav {
+                gap: 0.5rem;
+            }
+
+            .search-bar {
+                max-width: 150px;
+            }
+
+            .theme-toggle {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+
+            nav a {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">📖</div>
+                Sanglo Stories
+            </a>
+            <nav>
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search stories...">
+                </div>
+                <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
+                <a href="#home">Home</a>
+                <a href="#stories">Stories</a>
+                <a href="#about">About</a>
+                <!-- Admin panel is hosted separately; access via http://localhost:3001 and requires credentials -->
+                <a href="#" class="contact-btn" onclick="openContactModal()">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Sanglo Stories</h1>
+            <p>Suangtuahna rama cheng turin i inpeih em le? Fan ngai loh ram nuam fang ang aw. I duhthusam thlen dik theihna chu helai hmun chauh hi a ni e!</p>
+        </div>
+    </section>
+
+    <main id="stories">
+        <div id="storiesContainer">
+            <div class="loading">
+                <div class="loading-spinner">📖</div>
+                <p>Loading stories...</p>
+            </div>
+        </div>
+    </main>
+
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2>About Sanglo Stories</h2>
+            <p>Sanglo Stories is a community-driven platform dedicated to the art of storytelling. Whether you're a writer, reader, or just someone who appreciates a good tale, you'll find something here for you. Our mission is to provide a welcoming space where stories of all genres can be shared, discovered, and celebrated.</p>
+            <p>We believe that stories connect us, inspire us, and help us understand the world and each other. Browse through a diverse collection of personal anecdotes, fiction, poetry, and more. Like what you read? Show your appreciation with a like or leave a comment to join the conversation.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Sanglo Stories. All Rights Reserved</p>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeContactModal()">✕</button>
+            <h2>Get in Touch</h2>
+            <p>Have a story idea, feedback, or just want to say hello? We'd love to hear from you!</p>
+            <form onsubmit="submitContact(event)">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="tel">Phone Number</label>
+                    <input type="tel" id="tel" placeholder="Enter your Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Write your message..." required></textarea>
+                </div>
+                <button type="submit" class="submit-form">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let stories = [];
+        let currentStoryId = null;
+        let allStories = []; // Store all stories for filtering
+
+        // Default story for demo purposes
+        const defaultStory = {
+            id: 'default',
+            title: 'The Secret Garden of Memories',
+            category: 'Adventure',
+            author: 'Elena Rodriguez',
+            date: 'March 15, 2024',
+            readTime: 8,
+            content: `Hidden behind the crumbling walls of the old mansion on Willow Street lay a garden that nobody had seen in over fifty years. Legend said that whoever entered would find not just flowers, but memories—fragments of lives lived and loves lost, preserved in petals and stems.
+
+Young botanist Maya had inherited the property from her grandmother, a woman who spoke of the garden only in whispers. On the morning of her twenty-fifth birthday, Maya finally found the rusted key buried in her grandmother's jewelry box.
+
+The lock clicked open with a sigh, and the gate swung inward to reveal a world suspended in time. Roses of every color bloomed in impossible abundance, their fragrance overwhelming yet strangely familiar. As she walked through the winding paths, Maya began to understand why her grandmother had kept this place secret.
+
+Each flower held a story—a first kiss hidden in the petals of a red rose, a wedding vow preserved in white lilies, a child's laughter echoing from sunflowers. The garden was not just beautiful; it was a living archive of love and loss, joy and sorrow.
+
+As the sun began to set, painting the sky in shades of orange and pink, Maya understood her grandmother's gift. Some memories are too precious to keep only in the heart—they need to be grown, tended, and watched bloom year after year.`,
+            likes: 124,
+            comments: [
+                { author: 'Sarah Mitchell', date: '2 hours ago', text: 'This story is absolutely beautiful! The imagery of memories preserved in flowers is so poetic and touching. 🌸' },
+                { author: 'James Chen', date: '5 hours ago', text: 'I loved how the author connected family secrets with the garden metaphor. Made me think of my own grandmother\'s stories.' },
+                { author: 'Amira Hassan', date: '1 day ago', text: 'Such a heartfelt story! Can\'t wait for more from this author. The descriptive writing is top-notch.' }
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStories();
+            setupSearch();
+            setupThemeToggle();
+        });
+
+        // Load stories from API
+        async function loadStories() {
+            const container = document.getElementById('storiesContainer');
+            
+            try {
+                const response = await fetch(`${API_BASE}/stories`);
+                const apiStories = await response.json();
+                
+                if (apiStories.length > 0) {
+                    stories = apiStories;
+                    allStories = [...apiStories]; // Store all stories for filtering
+                    renderStories();
+                } else {
+                    // Use default story if no stories in database
+                    stories = [defaultStory];
+                    allStories = [defaultStory];
+                    renderStories();
+                }
+            } catch (error) {
+                console.error('Error loading stories:', error);
+                // Fallback to default story on error
+                stories = [defaultStory];
+                allStories = [defaultStory];
+                renderStories();
+            }
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', filterStories);
+        }
+
+        // Filter stories based on search query
+        function filterStories() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!query) {
+                stories = [...allStories];
+            } else {
+                stories = allStories.filter(story => 
+                    story.title.toLowerCase().includes(query) ||
+                    story.author.toLowerCase().includes(query) ||
+                    story.category.toLowerCase().includes(query) ||
+                    story.content.toLowerCase().includes(query)
+                );
+            }
+            
+            renderStories();
+        }
+
+        // Setup theme toggle
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+
+        // Update theme toggle icon
+        function updateThemeIcon(theme) {
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+            themeToggle.title = theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
+        }
+
+        // Render stories to page
+        function renderStories() {
+            const container = document.getElementById('storiesContainer');
+            
+            if (stories.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📖</div>
+                        <h3>No Stories Yet</h3>
+                        <p>Check back later for new stories!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = stories.map((story, index) => {
+                // split on one or more newlines to preserve paragraphs, filter out empty lines
+                const paragraphs = story.content.split(/\r?\n+/).filter(p => p.trim() !== '');
+                const isLong = story.content.length > 150; // much shorter preview
+                // preview is either first paragraph or first 100 characters
+                let previewContent;
+                if (isLong) {
+                    const firstPara = paragraphs[0] || '';
+                    previewContent = `<p>${firstPara.slice(0, 100)}${firstPara.length > 100 ? '…' : ''}</p>`;
+                } else {
+                    previewContent = paragraphs.map(p => `<p>${p}</p>`).join('');
+                }
+                const fullContent = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+                
+                return `
+                <article class="story-card" data-story-id="${story.id}">
+                    <div class="story-image">
+                        ${story.imageUrl ? `<img src="${story.imageUrl}" alt="${story.title}">` : '🌟'}
+                    </div>
+                    <div class="story-content">
+                        <span class="story-category">${story.category}</span>
+                        <h2 class="story-title">${story.title}</h2>
+                        <div class="story-meta">
+                            <span>👤 By ${story.author}</span>
+                            <span>📅 ${story.date || 'Recently'}</span>
+                            <span>⏱️ ${story.readTime || 5} min read</span>
+                        </div>
+                        <div class="story-text ${isLong ? 'truncated' : ''}">
+                            <div class="story-preview">
+                                ${previewContent}
+                            </div>
+                            ${isLong ? `<div class="story-full" style="display: none;">${fullContent}</div>` : ''}
+                        </div>
+                        ${isLong ? `<button class="read-more-btn" onclick="toggleStory('${story.id}')">Read More ▼</button>` : ''}
+                    </div>
+                    <div class="actions-bar">
+                        <button class="action-btn like-btn ${story.liked ? 'liked' : ''}" onclick="toggleLike('${story.id}')">
+                            <span class="heart-icon">❤️</span>
+                            <span class="like-count">${story.likes || 0}</span> Likes
+                        </button>
+                        <button class="action-btn comment-btn" onclick="toggleComments('${story.id}')">
+                            <span>💬</span>
+                            <span class="comment-count">${story.comments ? story.comments.length : 0}</span> Comments
+                        </button>
+                        <button class="action-btn contact-btn" onclick="openContactModal()" style="margin-left: auto;">
+                            <span>📧</span> Contact Author
+                        </button>
+                    </div>
+                    <div class="comments-section" id="comments-${story.id}">
+                        <h3 class="comments-title">💭 Comments <span class="total-comments">(${story.comments ? story.comments.length : 0})</span></h3>
+                        <div class="comment-form">
+                            <input type="text" class="comment-input" id="commentInput-${story.id}" placeholder="Share your thoughts...">
+                            <button class="submit-comment" onclick="addComment('${story.id}')">Post</button>
+                        </div>
+                        <div class="comments-list" id="commentsList-${story.id}">
+                            ${renderComments(story.comments || [])}
+                        </div>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // Render comments
+        function renderComments(comments) {
+            if (!comments || comments.length === 0) {
+                return '<div class="no-comments">No comments yet. Be the first to comment!</div>';
+            }
+            
+            return comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.author}</span>
+                        <span class="comment-date">${comment.date || 'Just now'}</span>
+                    </div>
+                    <p class="comment-text">${comment.text}</p>
+                </div>
+            `).join('');
+        }
+
+        // Toggle like
+        async function toggleLike(storyId) {
+            const story = stories.find(s => s.id === storyId);
+            if (!story) return;
+
+            const card = document.querySelector(`[data-story-id="${storyId}"]`);
+            const likeBtn = card.querySelector('.like-btn');
+            const likeCount = card.querySelector('.like-count');
+
+            try {
+                const response = await fetch(`${API_BASE}/stories/${storyId}/like`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    likeCount.textContent = data.likes;
+                    likeBtn.classList.toggle('liked');
+                    story.likes = data.likes;
+                    story.liked = likeBtn.classList.contains('liked');
+                }
+            } catch (error) {
+                // Fallback to local toggle
+                story.likes = (story.likes || 0) + 1;
+                story.liked = true;
+                likeCount.textContent = story.likes;
+                likeBtn.classList.add('liked');
+            }
+        }
+
+        // Toggle comments
+        function toggleComments(storyId) {
+            const section = document.getElementById(`comments-${storyId}`);
+            section.classList.toggle('active');
+            currentStoryId = storyId;
+        }
+
+        // Add comment
+        async function addComment(storyId) {
+            const input = document.getElementById(`commentInput-${storyId}`);
+            const text = input.value.trim();
+            const story = stories.find(s => s.id === storyId);
+            
+            if (!text || !story) return;
+
+            const commentData = {
+                author: 'You',
+                date: 'Just now',
+                text: text
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/stories/${storyId}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(commentData)
+                });
+                
+                if (response.ok) {
+                    const newComment = await response.json();
+                    if (!story.comments) story.comments = [];
+                    story.comments.unshift(newComment);
+                    
+                    // Update UI
+                    const commentsList = document.getElementById(`commentsList-${storyId}`);
+                    const commentCount = document.querySelector(`[data-story-id="${storyId}"] .comment-count`);
+                    const totalComments = document.querySelector(`[data-story-id="${storyId}"] .total-comments`);
+                    
+                    commentsList.innerHTML = renderComments(story.comments);
+                    commentCount.textContent = story.comments.length;
+                    totalComments.textContent = `(${story.comments.length})`;
+                    input.value = '';
+                }
+            } catch (error) {
+                // Fallback to local comment
+                if (!story.comments) story.comments = [];
+                story.comments.unshift(commentData);
+                
+                const commentsList = document.getElementById(`commentsList-${storyId}`);
+                const commentCount = document.querySelector(`[data-story-id="${storyId}"] .comment-count`);
+                const totalComments = document.querySelector(`[data-story-id="${storyId}"] .total-comments`);
+                
+                commentsList.innerHTML = renderComments(story.comments);
+                commentCount.textContent = story.comments.length;
+                totalComments.textContent = `(${story.comments.length})`;
+                input.value = '';
+            }
+        }
+
+        // Contact Modal Functions
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('active');
+        }
+
+        async function submitContact(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            try {
+                await fetch(`${API_BASE}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+            } catch (error) {
+                console.log('Message saved locally');
+            }
+
+            alert(`Thank you, ${name}! Your message has been sent successfully.`);
+            closeContactModal();
+            event.target.reset();
+        }
+
+        // Toggle story expansion
+        function toggleStory(storyId) {
+            const card = document.querySelector(`[data-story-id="${storyId}"]`);
+            const preview = card.querySelector('.story-preview');
+            const full = card.querySelector('.story-full');
+            const btn = card.querySelector('.read-more-btn');
+            
+            if (full.style.display === 'none') {
+                preview.style.display = 'none';
+                full.style.display = 'block';
+                btn.textContent = 'Read Less ▲';
+            } else {
+                preview.style.display = 'block';
+                full.style.display = 'none';
+                btn.textContent = 'Read More ▼';
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        // Allow Enter key to submit comment
+        document.addEventListener('keypress', function(e) {
+            if (e.target.classList.contains('comment-input') && e.key === 'Enter' && currentStoryId) {
+                addComment(currentStoryId);
+            }
+        });
+    </script>
+</body>
+</html>
+

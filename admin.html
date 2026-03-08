@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanglo Stories Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Janson&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #8b4513;
+            --accent: #e74c3c;
+            --bg-cream: #fdf8f3;
+            --bg-white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #6b7280;
+            --border: #e5e0db;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --glow-primary: 0 0 20px rgba(44, 62, 80, 0.4);
+            --glow-secondary: 0 0 25px rgba(139, 69, 19, 0.5);
+            --glow-accent: 0 0 20px rgba(231, 76, 60, 0.4);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Janson', serif !important;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Advanced Glow Effects */
+        .glow-primary {
+            box-shadow: var(--glow-primary);
+            filter: drop-shadow(0 0 10px rgba(44, 62, 80, 0.3));
+        }
+
+        .glow-secondary {
+            box-shadow: var(--glow-secondary);
+            filter: drop-shadow(0 0 12px rgba(139, 69, 19, 0.4));
+        }
+
+        .glow-accent {
+            box-shadow: var(--glow-accent);
+            filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.3));
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.1) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        header:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        .logo-icon:hover {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5); }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .view-site-btn {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            padding: 0.6rem 1.25rem;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-site-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+        }
+
+        .view-site-btn:hover::before {
+            left: 100%;
+        }
+
+        .view-site-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--glow-primary);
+            color: white;
+        }
+
+        /* Admin Layout */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+        }
+
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--bg-white);
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            width: fit-content;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        .tab-btn.active::before {
+            opacity: 0.2;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: var(--bg-cream);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .form-card:hover::before {
+            opacity: 0.02;
+        }
+
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+            background: var(--bg-white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 200px;
+            font-family: 'Janson', serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .form-group input[type="file"] {
+            display: none;
+        }
+
+        .image-upload-container {
+            position: relative;
+        }
+
+        .image-preview {
+            margin: 1rem auto;
+            width: 100%;
+            max-width: 400px; /* keep preview from stretching full page */
+            height: 200px;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            background: var(--bg-cream);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .image-preview:hover {
+            border-color: var(--primary);
+            background: rgba(44, 62, 80, 0.05);
+        }
+
+        .image-preview.dragover {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .preview-placeholder span {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-placeholder small {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .image-upload-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .submit-btn {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .cancel-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 2px solid var(--border);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cancel-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text-dark);
+        }
+
+        /* Stories List */
+        .stories-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .story-item {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .story-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            border-radius: 16px;
+        }
+
+        .story-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .story-item:hover::before {
+            opacity: 0.03;
+        }
+
+        .story-thumb {
+            width: 120px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .story-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+        .story-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .story-info {
+            flex: 1;
+        }
+
+        .story-category {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary), #a0522d);
+            color: white;
+            padding: 0.2rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .story-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .edit-btn {
+            background: var(--bg-cream);
+            color: var(--primary);
+        }
+
+        .edit-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: var(--glow-primary);
+        }
+
+        .edit-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        .delete-btn {
+            background: var(--bg-cream);
+            color: var(--accent);
+        }
+
+        .delete-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: var(--glow-accent);
+        }
+
+        .delete-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--bg-white);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-hover);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .notification.success {
+            border-left: 4px solid #27ae60;
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--accent);
+        }
+
+        .notification-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+        }
+
+        .stat-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 16px rgba(240, 147, 251, 0.5);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal {
+            background: var(--bg-white);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            animation: modalSlide 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .confirm-delete-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .confirm-delete-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .confirm-delete-btn:hover::before {
+            left: 100%;
+        }
+
+        .confirm-delete-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive - Phone View */
+        @media (max-width: 768px) {
+            /* Header */
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            .header-actions .view-site-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            /* Admin Container */
+            .admin-container {
+                padding: 1rem;
+            }
+
+            .admin-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .admin-header p {
+                font-size: 0.9rem;
+            }
+
+            /* Tabs - Horizontal scroll on mobile */
+            .tabs {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding: 0.5rem;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Form */
+            .form-card {
+                padding: 1.25rem;
+            }
+
+            .form-title {
+                font-size: 1.35rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-group textarea {
+                min-height: 150px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .submit-btn, .cancel-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.25rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            /* Stories List */
+            .story-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .story-thumb {
+                width: 100%;
+                height: 120px;
+            }
+
+            .story-info {
+                width: 100%;
+            }
+
+            .story-title {
+                font-size: 1.1rem;
+            }
+
+            .story-meta {
+                font-size: 0.75rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .story-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            /* Modal */
+            .modal {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .modal h2 {
+                font-size: 1.25rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions button {
+                width: 100%;
+            }
+
+            /* Notifications */
+            .notification {
+                right: 10px;
+                left: 10px;
+                font-size: 0.9rem;
+            }
+
+            /* Empty State */
+            .empty-state {
+                padding: 2rem 1rem;
+            }
+
+            .empty-state-icon {
+                font-size: 3rem;
+            }
+
+            .empty-state h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            .admin-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📖</div>
+                Sanglo Stories
+            </a>
+            <div class="header-actions">
+                <a href="index.html" class="view-site-btn">View Site</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your stories, upload new content, and track engagement.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('stories')">📚 Stories</button>
+            <button class="tab-btn" onclick="switchTab('upload')">➕ Upload New</button>
+            <button class="tab-btn" onclick="switchTab('messages')">✉️ Messages</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-number" id="totalStories">0</div>
+                    <div class="stat-label">Total Stories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-number" id="totalLikes">0</div>
+                    <div class="stat-label">Total Likes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-number" id="totalComments">0</div>
+                    <div class="stat-label">Total Comments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✉️</div>
+                    <div class="stat-number" id="totalMessages">0</div>
+                    <div class="stat-label">Contact Messages</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories Tab -->
+        <div class="tab-content" id="stories">
+            <div class="loading" id="storiesLoading">Loading stories...</div>
+            <div class="stories-list" id="storiesList">
+                <!-- Stories will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Upload Tab -->
+        <div class="tab-content" id="upload">
+            <div class="form-card">
+                <h2 class="form-title" id="formTitle">Upload New Story</h2>
+                <form id="storyForm" onsubmit="saveStory(event)">
+                    <input type="hidden" id="storyId">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="title">Story Title</label>
+                            <input type="text" id="title" placeholder="Enter story title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select category</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Mystery">Mystery</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Sci-Fi">Sci-Fi</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Comedy">Comedy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Author Name</label>
+                            <input type="text" id="author" placeholder="Enter author name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="readTime">Read Time (minutes)</label>
+                            <input type="number" id="readTime" placeholder="e.g., 5" min="1" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="imageFile">Cover Image</label>
+                            <div class="image-upload-container">
+                                <input type="file" id="imageFile" accept="image/*" onchange="previewImage(event)">
+                                <div class="image-preview" id="imagePreview">
+                                    <div class="preview-placeholder">
+                                        <span>📷 Click to select image or drag & drop</span>
+                                        <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="imageUrl">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="content">Story Content</label>
+                            <textarea id="content" placeholder="Write your story here..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn" id="submitBtn">Publish Story</button>
+                        <button type="button" class="cancel-btn" onclick="resetForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-content" id="messages">
+            <div class="loading" id="messagesLoading">Loading messages...</div>
+            <div class="stories-list" id="messagesList">
+                <!-- Messages will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <h2>Delete Story?</h2>
+            <p>Are you sure you want to delete this story? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+                <button class="confirm-delete-btn" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let stories = [];
+        let deleteId = null;
+        let editingId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboard();
+            loadStories();
+            loadMessages();
+        });
+
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'dashboard') loadDashboard();
+            if (tabId === 'stories') loadStories();
+            if (tabId === 'messages') loadMessages();
+        }
+
+        // Dashboard
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`, { credentials: 'include' });
+                const stats = await response.json();
+                
+                document.getElementById('totalStories').textContent = stats.totalStories;
+                document.getElementById('totalLikes').textContent = stats.totalLikes;
+                document.getElementById('totalComments').textContent = stats.totalComments;
+                document.getElementById('totalMessages').textContent = stats.totalMessages;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                showNotification('Failed to load dashboard stats', 'error');
+            }
+        }
+
+        // Stories
+        async function loadStories() {
+            const loading = document.getElementById('storiesLoading');
+            const list = document.getElementById('storiesList');
+            
+            loading.style.display = 'flex';
+            list.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_BASE}/stories`, { credentials: 'include' });
+                stories = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (stories.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📖</div>
+                            <h3>No Stories Yet</h3>
+                            <p>Start by uploading your first story!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = stories.map(story => `
+                    <div class="story-item">
+                        <div class="story-thumb">${story.imageUrl ? `<img src="${story.imageUrl}" alt="${story.title}">` : '📖'}</div>
+                        <div class="story-info">
+                            <span class="story-category">${story.category}</span>
+                            <h3 class="story-title">${story.title}</h3>
+                            <div class="story-meta">By ${story.author} • ${story.readTime} min read • ${story.date || 'N/A'}</div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn edit-btn" onclick="editStory('${story.id}')">✏️ Edit</button>
+                            <button class="action-btn delete-btn" onclick="openDeleteModal('${story.id}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading stories:', error);
+                loading.style.display = 'none';
+                showNotification('Failed to load stories', 'error');
+            }
+        }
+
+        // Image Preview and Upload Functions
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Make preview area clickable
+        document.getElementById('imagePreview').addEventListener('click', function() {
+            document.getElementById('imageFile').click();
+        });
+
+        // Drag and drop functionality
+        const preview = document.getElementById('imagePreview');
+        const fileInput = document.getElementById('imageFile');
+
+        preview.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        preview.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        preview.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                previewImage({ target: { files: files } });
+            }
+        });
+
+        // Save Story
+        async function saveStory(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('author', document.getElementById('author').value);
+            formData.append('readTime', document.getElementById('readTime').value);
+            formData.append('content', document.getElementById('content').value);
+            
+            // Handle image
+            const imageFile = document.getElementById('imageFile').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            } else if (document.getElementById('imageUrl').value) {
+                formData.append('imageUrl', document.getElementById('imageUrl').value);
+            }
+
+            try {
+                let response;
+                if (editingId) {
+                    response = await fetch(`${API_BASE}/stories/${editingId}`, {
+                        method: 'PUT',
+                        body: formData,
+                        credentials: 'include'
+                    });
+                    showNotification('Story updated successfully!', 'success');
+                } else {
+                    response = await fetch(`${API_BASE}/stories`, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include'
+                    });
+                    showNotification('Story published successfully!', 'success');
+                }
+
+                if (!response.ok) throw new Error('Failed to save story');
+
+                resetForm();
+                loadDashboard();
+                loadStories();
+                document.querySelectorAll('.tab-btn')[1].click();
+            } catch (error) {
+                console.error('Error saving story:', error);
+                showNotification('Failed to save story', 'error');
+            }
+        }
+
+        // Edit Story
+        function editStory(id) {
+            const story = stories.find(s => s.id === id);
+            if (!story) return;
+
+            editingId = id;
+            
+            document.getElementById('formTitle').textContent = 'Edit Story';
+            document.getElementById('submitBtn').textContent = 'Update Story';
+            document.getElementById('storyId').value = id;
+            document.getElementById('title').value = story.title;
+            document.getElementById('category').value = story.category;
+            document.getElementById('author').value = story.author;
+            document.getElementById('readTime').value = story.readTime;
+            document.getElementById('imageUrl').value = story.imageUrl || '';
+            document.getElementById('content').value = story.content;
+
+            // Clear file input and set preview
+            document.getElementById('imageFile').value = '';
+            if (story.imageUrl) {
+                document.getElementById('imagePreview').innerHTML = `<img src="${story.imageUrl}" alt="Preview">`;
+            } else {
+                document.getElementById('imagePreview').innerHTML = `
+                    <div class="preview-placeholder">
+                        <span>📷 Click to select image or drag & drop</span>
+                        <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>
+                    </div>
+                `;
+            }
+
+            document.querySelectorAll('.tab-btn')[2].click();
+        }
+
+        // Delete Story
+        function openDeleteModal(id) {
+            deleteId = id;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            deleteId = null;
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        async function confirmDelete() {
+            if (!deleteId) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/stories/${deleteId}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete story');
+                
+                showNotification('Story deleted successfully!', 'success');
+                closeDeleteModal();
+                loadDashboard();
+                loadStories();
+            } catch (error) {
+                console.error('Error deleting story:', error);
+                showNotification('Failed to delete story', 'error');
+            }
+        }
+
+        // Reset Form
+        function resetForm() {
+            editingId = null;
+            document.getElementById('storyForm').reset();
+            document.getElementById('formTitle').textContent = 'Upload New Story';
+            document.getElementById('submitBtn').textContent = 'Publish Story';
+            document.getElementById('imagePreview').innerHTML = `
+                <div class="preview-placeholder">
+                    <span>📷 Click to select image or drag & drop</span>
+                    <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>
+                </div>
+            `;
+        }
+
+        // Image Preview
+        function setupImagePreview() {
+            const input = document.getElementById('imageUrl');
+            const preview = document.getElementById('imagePreview');
+
+            input.addEventListener('input', function() {
+                const url = this.value;
+                if (url) {
+                    preview.innerHTML = `<img src="${url}" alt="Preview" onerror="this.parentElement.innerHTML='<span>Invalid image URL</span>'">`;
+                } else {
+                    preview.innerHTML = '<span>Image preview will appear here</span>';
+                }
+            });
+        }
+
+        // Messages
+        async function loadMessages() {
+            const loading = document.getElementById('messagesLoading');
+            const list = document.getElementById('messagesList');
+            
+            loading.style.display = 'flex';
+            list.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_BASE}/messages`, { credentials: 'include' });
+                const messages = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (messages.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">✉️</div>
+                            <h3>No Messages</h3>
+                            <p>Contact form submissions will appear here.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = messages.map(msg => `
+                    <div class="story-item">
+                        <div class="story-thumb" style="background: linear-gradient(135deg, var(--secondary), var(--accent));">✉️</div>
+                        <div class="story-info">
+                            <span class="story-category">Contact</span>
+                            <h3 class="story-title">${msg.name}</h3>
+                            <div class="story-meta">${msg.email} • ${new Date(msg.createdAt).toLocaleDateString()}</div>
+                            <p style="margin-top: 0.5rem; color: var(--text-dark);">${msg.message}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                loading.style.display = 'none';
+                showNotification('Failed to load messages', 'error');
+            }
+        }
+
+        // Notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span class="notification-icon">${type === 'success' ? '✅' : '❌'}</span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+</body>
+</html>
+
